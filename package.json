@@ -1,0 +1,15 @@
+{
+  "name": "MMM-RATP",
+  "version": "0.1.0",
+  "description": "A MagicMirror module that displays data from the RATP",
+  "main": "MMM-RATP.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "closingin",
+  "license": "GPLv3",
+  "dependencies": {
+    "phin": "^3.5.0"
+  }
+}

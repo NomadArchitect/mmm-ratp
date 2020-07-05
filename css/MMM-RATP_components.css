@@ -1,0 +1,134 @@
+/*
+ * This file is part of MMM-RATP (https://gitlab.com/closingin/mmm-ratp)
+ * Copyright (C) 2020 Rémi Weislinger
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/* ==========================================================================
+   Component: Card
+   ========================================================================== */
+
+.MMM-RATP__card {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  padding: 10px 10px;
+  background-color: rgba(255, 255, 255, .2);
+  border-radius: 5px;
+}
+
+.MMM-RATP__card + .MMM-RATP__card {
+  margin-top: 5px;
+}
+
+.MMM-RATP__card__prepend { margin-right: 10px; }
+.MMM-RATP__card__append  { margin-left:  10px; }
+
+.MMM-RATP__card__text {
+  flex-grow: 1;
+  overflow: hidden;
+  text-align: left;
+}
+
+.MMM-RATP__card__text__title,
+.MMM-RATP__card__text__subtitle {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: normal;
+}
+
+.MMM-RATP__card__text__title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: .9em;
+}
+
+.MMM-RATP__card__text__subtitle {
+  font-size: .7em;
+}
+
+.MMM-RATP__card__text__content {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: .9em;
+}
+
+/* ==========================================================================
+   Component: Line (as in public transport)
+   ========================================================================== */
+
+.MMM-RATP__line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-width: 2px;
+  border-style: solid;
+  box-sizing: border-box;
+  border-radius: 50%;
+  font-size: .9em;
+  font-weight: bold;
+}
+
+.MMM-RATP__line--metro {
+  border-color: transparent;
+}
+
+.MMM-RATP__line--rer,
+.MMM-RATP__line--tramway {
+  background-color: transparent;
+}
+
+/* ==========================================================================
+   Component: Timer (waiting time)
+   ========================================================================== */
+
+.MMM-RATP__timer-container {
+  display: flex;
+}
+
+.MMM-RATP__timer {
+  margin: 0;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.MMM-RATP__timer + .MMM-RATP__timer {
+  margin-left: 4px;
+}
+
+.MMM-RATP__timer--incoming {
+  position: relative;
+  color: transparent;
+}
+
+.MMM-RATP__timer--incoming::after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  top: 4px;
+  left: 4px;
+  border-radius: 2px;
+  animation-name: timer-breathe;
+  animation-iteration-count: infinite;
+  animation-duration: 2s;
+  animation-timing-function: ease-out;
+  animation-direction: alternate;
+}
