@@ -114,7 +114,6 @@
 
 .MMM-RATP__timer--incoming {
   position: relative;
-  color: transparent;
 }
 
 .MMM-RATP__timer--incoming::after {
