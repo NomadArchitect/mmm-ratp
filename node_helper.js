@@ -100,6 +100,10 @@ module.exports = NodeHelper.create({
         //         - when the api returns an invalid value (it can happen apparently)
         station.timetable = station.timetable.filter((nextPass) => RATPHelper.isWaitingTimeValid(nextPass.waitingTime));
 
+        if (!station.timetable.length) {
+          station.timetable.push({ waitingTime: null, destination: 'Horaires non disponibles' });
+        }
+
         return station;
       });
 
