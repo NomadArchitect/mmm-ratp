@@ -17,6 +17,11 @@
  */
 
 Module.register('MMM-RATP', {
+  /**
+   * requiresVersion - Minimum MagicMirror² version required to use this module
+   *
+   * @type {String}
+   */
   requiresVersion: '2.1.0',
 
   /**
@@ -31,14 +36,14 @@ Module.register('MMM-RATP', {
 
     timetables: {
       title: 'Prochains passages',
-      updateInterval: 1 * 60 * 1000, // Every minute
+      updateInterval: 1 * 60 * 1000, // Every minute, in milliseconds
       config: [],
       nextPassesAmount: 2
     },
 
     traffic: {
       title: 'Infos trafic',
-      updateInterval: 10 * 60 * 1000, // Every 10 minutes
+      updateInterval: 10 * 60 * 1000, // Every 10 minutes, in milliseconds
       config: [],
       hideWhenNormal: false
     }
