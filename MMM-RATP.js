@@ -31,7 +31,7 @@ Module.register('MMM-RATP', {
    */
   defaults: {
     theme: 'mirror',
-    debug: false, // TODO: Actually use this option
+    debug: false,
     showUpdateAnimation: true, // TODO: Actually use this option
 
     timetables: {
@@ -74,6 +74,8 @@ Module.register('MMM-RATP', {
    * @returns {void} This function doesn't return anything
    */
   initializeModule () {
+    debug(this.config.debug, this.identifier, `Initializing module`);
+
     if (this.config.timetables.config.length) {
       setInterval(() => {
         this.sendSocketNotification('FETCH_TIMETABLES', this.identifier);
@@ -111,6 +113,7 @@ Module.register('MMM-RATP', {
    */
   getScripts () {
     return [
+      this.file('js/Utils.js'),
       this.file('js/DOMBuilder.js')
     ];
   },
@@ -146,6 +149,8 @@ Module.register('MMM-RATP', {
    * @returns {HTMLElement} The wrapper for the module's content
    */
   getDom () {
+    debug(this.config.debug, this.identifier, `Rebuilding the DOM`);
+
     const wrapper = document.createElement('div');
 
     if (this.apiData.timetables.length) {
@@ -173,6 +178,8 @@ Module.register('MMM-RATP', {
     if (this.identifier !== target) {
       return;
     }
+
+    debug(this.config.debug, this.identifier, `Received socket notification: ${notification}`);
 
     switch (notification) {
       case 'HELPER_INITIALIZED':

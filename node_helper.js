@@ -27,7 +27,10 @@ const fetchOptions = {
 };
 
 const NodeHelper = require('node_helper');
-const RATPHelper = require('./js/RATPHelper.js');
+const RATPHelper = require('./js/RATPHelper');
+const {
+  debug
+} = require('./js/Utils');
 
 module.exports = NodeHelper.create({
   /**
@@ -39,6 +42,8 @@ module.exports = NodeHelper.create({
    * @returns {void} This function doesn't return anything
    */
   initializeHelper (moduleIdentifier, moduleConfig) {
+    debug(moduleConfig.debug, moduleIdentifier, 'Initializing helper');
+
     this[moduleIdentifier] = {
       config: moduleConfig,
       prevData: {},
@@ -59,6 +64,8 @@ module.exports = NodeHelper.create({
   fetchTimetables (moduleIdentifier, options = fetchOptions) {
     const scope = this[moduleIdentifier];
     const requests = [];
+
+    debug(scope.config.debug, moduleIdentifier, 'Fetching timetables');
 
     scope.config.timetables.config.forEach((entry) => {
       const station = RATPHelper.apiRequest(`/stations/${entry.type}s/${entry.line}`)
@@ -139,6 +146,8 @@ module.exports = NodeHelper.create({
     const scope = this[moduleIdentifier];
     const requests = [];
 
+    debug(scope.config.debug, moduleIdentifier, 'Fetching traffic information');
+
     scope.config.traffic.config.forEach((entry) => {
       requests.push(
         RATPHelper.apiRequest(`/traffic/${entry.type}s/${entry.line}`)
@@ -176,6 +185,8 @@ module.exports = NodeHelper.create({
    * @returns {Promise} A promise resolving with nothing on success
    */
   fetchAll (moduleIdentifier) {
+    debug(this[moduleIdentifier].config.debug, moduleIdentifier, 'Fetching everything');
+
     return Promise.all([
       this.fetchTimetables(moduleIdentifier, { notify: false }),
       this.fetchTraffic(moduleIdentifier, { notify: false })
