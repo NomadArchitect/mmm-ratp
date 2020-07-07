@@ -64,26 +64,26 @@ Module.register('MMM-RATP', {
   },
 
   /**
-   * initializeModule - Registers the functions to call on refresh and runs the first fetch call
+   * initializeModule - Registers the functions to call on refresh and registers the module on the helper
    *
    * @returns {void} This function doesn't return anything
    */
   initializeModule () {
     if (this.config.timetables.config.length) {
       setInterval(() => {
-        this.sendSocketNotification('FETCH_TIMETABLES', this.config.timetables.config);
+        this.sendSocketNotification('FETCH_TIMETABLES', this.identifier);
       }, this.config.timetables.updateInterval);
     }
 
     if (this.config.traffic.config.length) {
       setInterval(() => {
-        this.sendSocketNotification('FETCH_TRAFFIC', this.config.traffic.config);
+        this.sendSocketNotification('FETCH_TRAFFIC', this.identifier);
       }, this.config.traffic.updateInterval);
     }
 
-    this.sendSocketNotification('FETCH_ALL', {
-      timetables: this.config.timetables.config,
-      traffic:  this.config.traffic.config
+    this.sendSocketNotification('INITIALIZE_HELPER', {
+      identifier: this.identifier,
+      config: this.config
     });
   },
 
@@ -158,12 +158,21 @@ Module.register('MMM-RATP', {
    * socketNotificationReceived - See https://docs.magicmirror.builders/development/core-module-file.html#socketnotificationreceived-function-notification-payload
    *
    * @param {String} notification The notification identifier
-   * @param {*}      payload      The payload attached to the socket message
+   * @param {Object} _            The payload attached to the socket message
+   * @param {String} _.target       The target of the notification (the module identifier)
+   * @param {*}      _.payload      The actual payload for the notification
    *
    * @returns {void} This function doesn't return anything
    */
-  socketNotificationReceived (notification, payload) {
+  socketNotificationReceived (notification, { target, payload }) {
+    if (this.identifier !== target) {
+      return;
+    }
+
     switch (notification) {
+      case 'HELPER_INITIALIZED':
+        this.sendSocketNotification('FETCH_ALL', this.identifier);
+        return;
       case 'DATA_ALL':
         this.apiData = payload;
         break;

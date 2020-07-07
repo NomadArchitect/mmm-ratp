@@ -31,27 +31,36 @@ const RATPHelper = require('./js/RATPHelper.js');
 
 module.exports = NodeHelper.create({
   /**
-   * start - See https://docs.magicmirror.builders/development/node-helper.html#start
+   * initializeHelper - Sets up the datastore for the given module
+   *
+   * @param {String} moduleIdentifier The module that requested the fetch
+   * @param {Object} moduleConfig     The module's config object
    *
    * @returns {void} This function doesn't return anything
    */
-  start () {
-    this.prevData = {};
-    this.currData = {};
+  initializeHelper (moduleIdentifier, moduleConfig) {
+    this[moduleIdentifier] = {
+      config: moduleConfig,
+      prevData: {},
+      currData: {}
+    };
+
+    this.sendSocketNotification('HELPER_INITIALIZED', { target: moduleIdentifier });
   },
 
   /**
-   * fetchTraffic - Fetches the timetables asked by the user
+   * fetchTimetables - Fetches the timetables asked by the user
    *
-   * @param {Object[]}     config  Definition of the data to fetch
-   * @param {FetchOptions} options Fetch options
+   * @param {String}       moduleIdentifier The module that requested the fetch
+   * @param {FetchOptions} options          Fetch options
    *
    * @returns {Promise<Object[]>} A promise resolving with the fetched data
    */
-  fetchTimetables (config, options = fetchOptions) {
+  fetchTimetables (moduleIdentifier, options = fetchOptions) {
+    const scope = this[moduleIdentifier];
     const requests = [];
 
-    config.forEach((entry) => {
+    scope.config.timetables.config.forEach((entry) => {
       const station = RATPHelper.apiRequest(`/stations/${entry.type}s/${entry.line}`)
         .then((stations) => stations.result.stations)
         .then((stations) => stations.find((s) => s.slug === entry.station));
@@ -76,21 +85,21 @@ module.exports = NodeHelper.create({
     });
 
     return Promise.all(requests).then((timetables) => {
-      this.prevData.timetables = this.currData.timetables;
-      this.currData.timetables = timetables.map((station, idx) => {
+      scope.prevData.timetables = scope.currData.timetables;
+      scope.currData.timetables = timetables.map((station, idx) => {
         // NOTE: If for some unforeseen circumstances it's impossible to get a
         //       timetable, let's try to estimate it based on the last fetched
         //       one
         if (!RATPHelper.isTimetableAvailable(station.timetable)
-          && this.prevData.timetables
-          && RATPHelper.isTimetableAvailable(this.prevData.timetables[idx].timetable)
+          && scope.prevData.timetables
+          && RATPHelper.isTimetableAvailable(scope.prevData.timetables[idx].timetable)
         ) {
           station.timetable = [];
-          station.requestedAt = this.prevData.timetables[idx].requestedAt;
+          station.requestedAt = scope.prevData.timetables[idx].requestedAt;
           station.estimation = true;
 
-          this.prevData.timetables[idx].timetable.forEach((nextPass) => {
-            const waitingTime = Math.round(nextPass.waitingTime - ((Date.now() - this.prevData.timetables[idx].requestedAt) / 60000));
+          scope.prevData.timetables[idx].timetable.forEach((nextPass) => {
+            const waitingTime = Math.round(nextPass.waitingTime - ((Date.now() - scope.prevData.timetables[idx].requestedAt) / 60000));
             station.timetable.push({ ...nextPass, waitingTime });
           });
         }
@@ -108,25 +117,29 @@ module.exports = NodeHelper.create({
       });
 
       if (options.notify) {
-        this.sendSocketNotification('DATA_TIMETABLES', this.currData.timetables);
+        this.sendSocketNotification('DATA_TIMETABLES', {
+          target: moduleIdentifier,
+          payload: scope.currData.timetables
+        });
       }
 
-      return this.currData.timetables;
+      return scope.currData.timetables;
     });
   },
 
   /**
    * fetchTraffic - Fetches the traffic asked by the user
    *
-   * @param {Object[]}     config  Definition of the data to fetch
-   * @param {FetchOptions} options Fetch options
+   * @param {String}       moduleIdentifier The module that requested the fetch
+   * @param {FetchOptions} options          Fetch options
    *
    * @returns {Promise<Object[]>} A promise resolving with the fetched data
    */
-  fetchTraffic (config, options = fetchOptions) {
+  fetchTraffic (moduleIdentifier, options = fetchOptions) {
+    const scope = this[moduleIdentifier];
     const requests = [];
 
-    config.forEach((entry) => {
+    scope.config.traffic.config.forEach((entry) => {
       requests.push(
         RATPHelper.apiRequest(`/traffic/${entry.type}s/${entry.line}`)
           .then((traffic) => traffic.result)
@@ -141,32 +154,36 @@ module.exports = NodeHelper.create({
     });
 
     return Promise.all(requests).then((traffic) => {
-      this.prevData.traffic = this.currData.traffic;
-      this.currData.traffic = traffic;
+      scope.prevData.traffic = scope.currData.traffic;
+      scope.currData.traffic = traffic;
 
       if (options.notify) {
-        this.sendSocketNotification('DATA_TRAFFIC', this.currData.traffic);
+        this.sendSocketNotification('DATA_TRAFFIC', {
+          target: moduleIdentifier,
+          payload: scope.currData.traffic
+        });
       }
 
-      return this.currData.traffic;
+      return scope.currData.traffic;
     });
   },
 
   /**
    * fetchAll - Fetches all the data that the user asked for and notifies back
    *
-   * @param {Object}   payload            An object containing the data configuration
-   * @param {Object[]} payload.timetables   The timetables configuration
-   * @param {Object[]} payload.traffic      The traffic configuration
+   * @param {String} moduleIdentifier The module that requested the fetch
    *
    * @returns {Promise} A promise resolving with nothing on success
    */
-  fetchAll (payload) {
+  fetchAll (moduleIdentifier) {
     return Promise.all([
-      this.fetchTimetables(payload.timetables, { notify: false }),
-      this.fetchTraffic(payload.traffic, { notify: false })
+      this.fetchTimetables(moduleIdentifier, { notify: false }),
+      this.fetchTraffic(moduleIdentifier, { notify: false })
     ]).then(([timetables, traffic]) => {
-      this.sendSocketNotification('DATA_ALL', { timetables, traffic });
+      this.sendSocketNotification('DATA_ALL', {
+        target: moduleIdentifier,
+        payload: { timetables, traffic }
+      });
     });
   },
 
@@ -180,6 +197,9 @@ module.exports = NodeHelper.create({
    */
   socketNotificationReceived (notification, payload) {
     switch (notification) {
+      case 'INITIALIZE_HELPER':
+        this.initializeHelper(payload.identifier, payload.config);
+        break;
       case 'FETCH_ALL':
         this.fetchAll(payload);
         break;
