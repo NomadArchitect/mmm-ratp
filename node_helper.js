@@ -22,8 +22,9 @@
  *
  * @property {Boolean} [notify=true] Whether to send a notification on the socket after fetching
  */
-const fetchOptions = {
-  notify: true
+const defaultFetchOptions = {
+  notifyOnStart: true,
+  notifyOnFinish: true
 };
 
 const NodeHelper = require('node_helper');
@@ -53,6 +54,14 @@ module.exports = NodeHelper.create({
     this.sendSocketNotification('HELPER_INITIALIZED', { target: moduleIdentifier });
   },
 
+  mergeFetchOptions (options) {
+    Object.keys(defaultFetchOptions).forEach((key) => {
+      if (!(key in options)) {
+        options[key] = defaultFetchOptions[key];
+      }
+    });
+  },
+
   /**
    * fetchTimetables - Fetches the timetables asked by the user
    *
@@ -61,7 +70,9 @@ module.exports = NodeHelper.create({
    *
    * @returns {Promise<Object[]>} A promise resolving with the fetched data
    */
-  fetchTimetables (moduleIdentifier, options = fetchOptions) {
+  fetchTimetables (moduleIdentifier, options = defaultFetchOptions) {
+    this.mergeFetchOptions(options);
+
     const scope = this[moduleIdentifier];
     const requests = [];
 
@@ -123,7 +134,7 @@ module.exports = NodeHelper.create({
         return station;
       });
 
-      if (options.notify) {
+      if (options.notifyOnFinish) {
         this.sendSocketNotification('DATA_TIMETABLES', {
           target: moduleIdentifier,
           payload: scope.currData.timetables
@@ -142,7 +153,9 @@ module.exports = NodeHelper.create({
    *
    * @returns {Promise<Object[]>} A promise resolving with the fetched data
    */
-  fetchTraffic (moduleIdentifier, options = fetchOptions) {
+  fetchTraffic (moduleIdentifier, options = defaultFetchOptions) {
+    this.mergeFetchOptions(options);
+
     const scope = this[moduleIdentifier];
     const requests = [];
 
@@ -166,7 +179,7 @@ module.exports = NodeHelper.create({
       scope.prevData.traffic = scope.currData.traffic;
       scope.currData.traffic = traffic;
 
-      if (options.notify) {
+      if (options.notifyOnFinish) {
         this.sendSocketNotification('DATA_TRAFFIC', {
           target: moduleIdentifier,
           payload: scope.currData.traffic
@@ -188,8 +201,8 @@ module.exports = NodeHelper.create({
     debug(this[moduleIdentifier].config.debug, moduleIdentifier, 'Fetching everything');
 
     return Promise.all([
-      this.fetchTimetables(moduleIdentifier, { notify: false }),
-      this.fetchTraffic(moduleIdentifier, { notify: false })
+      this.fetchTimetables(moduleIdentifier, { notifyOnFinish: false }),
+      this.fetchTraffic(moduleIdentifier, { notifyOnFinish: false })
     ]).then(([timetables, traffic]) => {
       this.sendSocketNotification('DATA_ALL', {
         target: moduleIdentifier,
