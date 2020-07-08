@@ -40,7 +40,7 @@ class DOMBuilder {
           title: station.stationName,
           subtitle: `&gt; ${station.timetable[0].destination}`
         },
-        DOMBuilder.createTimetable(station.timetable.slice(0, config.timetables.nextPassesAmount), station.estimation)
+        DOMBuilder.createTimetable(station.timetable.slice(0, config.timetables.nextPassesAmount), station.isEstimation)
       );
 
       section.appendChild(card);
@@ -179,19 +179,19 @@ class DOMBuilder {
   /**
    * @static createTimetable - Create a timetable element
    *
-   * @param {Object[]} timetable  The timetable data
-   * @param {Boolean}  estimation Whether the times in the timetable are an estimation or not
+   * @param {Object[]} timetable    The timetable data
+   * @param {Boolean}  isEstimation Whether the times in the timetable are an estimation or not
    *
    * @returns {HTMLElement} The newly created timetable
    */
-  static createTimetable (timetable, estimation) {
+  static createTimetable (timetable, isEstimation) {
     const element = document.createElement('div');
     element.className = 'MMM-RATP__timer-container';
 
     timetable.forEach((timetableEntry) => {
       const timer = DOMBuilder.createTimer(
         timetableEntry.waitingTime,
-        estimation
+        isEstimation
       );
 
       element.appendChild(timer);
@@ -203,19 +203,19 @@ class DOMBuilder {
   /**
    * @static createTimer - Create a timer element
    *
-   * @param {String}  time       The timer's content
-   * @param {Boolean} estimation Whether the given time is an estimation or not
+   * @param {String}  time         The timer's content
+   * @param {Boolean} isEstimation Whether the given time is an estimation or not
    *
    * @returns {HTMLElement} The newly created timer
    */
-  static createTimer (time, estimation) {
+  static createTimer (time, isEstimation) {
     const element = document.createElement('div');
 
     element.className = 'MMM-RATP__timer';
     element.innerHTML = time || '?';
 
     if (time === '0') element.classList.add('MMM-RATP__timer--incoming');
-    if (estimation)   element.innerHTML += '*';
+    if (isEstimation) element.innerHTML += '*';
 
     return element;
   }

@@ -118,7 +118,7 @@ module.exports = NodeHelper.create({
         ) {
           station.timetable = [];
           station.requestedAt = scope.prevData.timetables[idx].requestedAt;
-          station.estimation = true;
+          station.isEstimation = true;
 
           scope.prevData.timetables[idx].timetable.forEach((nextPass) => {
             const waitingTime = Math.round(nextPass.waitingTime - ((Date.now() - scope.prevData.timetables[idx].requestedAt) / 60000));
