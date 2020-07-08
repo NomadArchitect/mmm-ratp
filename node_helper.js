@@ -78,6 +78,10 @@ module.exports = NodeHelper.create({
 
     debug(scope.config.debug, moduleIdentifier, 'Fetching timetables with options', options);
 
+    if (options.notifyOnStart) {
+      this.sendSocketNotification('UPDATING_TIMETABLES', { target: moduleIdentifier });
+    }
+
     scope.config.timetables.config.forEach((entry) => {
       const station = RATPHelper.apiRequest(`/stations/${entry.type}s/${entry.line}`)
         .then((stations) => stations.result.stations)
@@ -160,6 +164,10 @@ module.exports = NodeHelper.create({
     const requests = [];
 
     debug(scope.config.debug, moduleIdentifier, 'Fetching traffic information with options', options);
+
+    if (options.notifyOnStart) {
+      this.sendSocketNotification('UPDATING_TRAFFIC', { target: moduleIdentifier });
+    }
 
     scope.config.traffic.config.forEach((entry) => {
       requests.push(
