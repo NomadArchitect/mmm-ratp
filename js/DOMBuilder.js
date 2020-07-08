@@ -94,7 +94,7 @@ class DOMBuilder {
     element.className = `MMM-RATP__section MMM-RATP__${type}`;
     element.innerHTML = `
       <h3 class="MMM-RATP__section__title">
-        ${title}
+        ${config[type].title}
         ${(status.isUpdating && config.showUpdateAnimation) ? ' <small>Mise à jour</small>' : ''}
       </h3>`;
 
