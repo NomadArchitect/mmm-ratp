@@ -32,7 +32,7 @@ Module.register('MMM-RATP', {
   defaults: {
     theme: 'mirror',
     debug: false,
-    showUpdateAnimation: true, // TODO: Actually use this option
+    showUpdateAnimation: true,
 
     timetables: {
       title: 'Prochains passages',
@@ -100,7 +100,10 @@ Module.register('MMM-RATP', {
    * @returns {void} This function doesn't return anything
    */
   start () {
-    this.apiData = { timetables: [], traffic: [] };
+    this.apiData = {
+      timetables: { entries: [], status: {} },
+      traffic:    { entries: [], status: {} }
+    };
 
     this.setDefaults();
     this.initializeModule();
@@ -153,8 +156,8 @@ Module.register('MMM-RATP', {
 
     const fragment = document.createDocumentFragment();
 
-    fragment.append(DOMBuilder.createTimetables(this.apiData.timetables, this.config.timetables));
-    fragment.append(DOMBuilder.createTraffic(this.apiData.traffic, this.config.traffic));
+    fragment.append(DOMBuilder.createTimetables(this.apiData.timetables, this.config));
+    fragment.append(DOMBuilder.createTraffic(this.apiData.traffic, this.config));
 
     return fragment;
   },
@@ -181,10 +184,16 @@ Module.register('MMM-RATP', {
         this.sendSocketNotification('FETCH_ALL', this.identifier);
         return;
       case 'DATA_TIMETABLES':
-        this.apiData.timetables = payload;
-        break;
       case 'DATA_TRAFFIC':
-        this.apiData.traffic = payload;
+        const type = notificationTypeToLower(notification);
+
+        this.apiData[type].status.isUpdating = false;
+        this.apiData[type].status.lastUpdate = new Date();
+        this.apiData[type].entries = payload;
+        break;
+      case 'UPDATING_TIMETABLES':
+      case 'UPDATING_TRAFFIC':
+        this.apiData[notificationTypeToLower(notification)].status.isUpdating = true;
         break;
     }
 

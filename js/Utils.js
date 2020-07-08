@@ -24,6 +24,16 @@ function debug (isDebugEnabled, moduleIdentifier, ...text) {
   console.debug(`[MMM-RATP][DEBUG][${moduleIdentifier}]`, ...text);
 }
 
+function notificationTypeToLower (notification) {
+  return notification.split('_')[1].toLowerCase();
+}
+
+function notificationTypeToSentence (notification) {
+  const type = notification.split('_')[1];
+
+  return `${type.slice(0, 1)}${type.slice(1).toLowerCase()}`;
+}
+
 if (typeof exports !== 'undefined') {
   exports.debug = debug;
 }

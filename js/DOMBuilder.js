@@ -28,18 +28,17 @@ class DOMBuilder {
    *
    * @returns {HTMLElement} The newly created timetables block
    */
-  static createTimetables (timetables, config) {
-    const section = DOMBuilder.createSection(config.title);
-    section.classList.add('MMM-RATP__timetables');
+  static createTimetables ({ status, entries }, config) {
+    const section = DOMBuilder.createSection('timetables', status, config);
 
-    timetables.forEach((station) => {
+    entries.forEach((station) => {
       const card = DOMBuilder.createCard(
         DOMBuilder.createLine(station.lineType, station.lineName),
         {
           title: station.stationName,
           subtitle: `&gt; ${station.timetable[0].destination}`
         },
-        DOMBuilder.createTimetable(station.timetable.slice(0, config.nextPassesAmount), station.estimation)
+        DOMBuilder.createTimetable(station.timetable.slice(0, config.timetables.nextPassesAmount), station.estimation)
       );
 
       section.appendChild(card);
@@ -56,12 +55,11 @@ class DOMBuilder {
    *
    * @returns {HTMLElement} The newly created traffic block
    */
-  static createTraffic (traffic, config) {
-    const section = DOMBuilder.createSection(config.title);
-    section.classList.add('MMM-RATP__traffic');
+  static createTraffic ({ status, entries }, config) {
+    const section = DOMBuilder.createSection('traffic', status, config);
 
-    traffic.forEach((info) => {
-      if (info.lineStatus === 'normal' && config.hideWhenNormal) {
+    entries.forEach((info) => {
+      if (info.lineStatus === 'normal' && config.traffic.hideWhenNormal) {
         return;
       }
 
@@ -90,11 +88,15 @@ class DOMBuilder {
    *
    * @returns {HTMLElement} The newly created section
    */
-  static createSection (title = '') {
+  static createSection (type, status, config) {
     const element = document.createElement('div');
 
-    element.className = 'MMM-RATP__section';
-    element.innerHTML = `<h3 class="MMM-RATP__section__title">${title}</h3>`;
+    element.className = `MMM-RATP__section MMM-RATP__${type}`;
+    element.innerHTML = `
+      <h3 class="MMM-RATP__section__title">
+        ${title}
+        ${(status.isUpdating && config.showUpdateAnimation) ? ' <small>Mise à jour</small>' : ''}
+      </h3>`;
 
     return element;
   }
