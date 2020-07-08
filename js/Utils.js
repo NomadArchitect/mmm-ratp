@@ -16,18 +16,41 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-function debug (isDebugEnabled, moduleIdentifier, ...text) {
+/**
+ * debug - Displays a given text in the console if debug mode is enabled
+ *
+ * @param {Boolean} isDebugEnabled   Whether debug mode is enabled or not
+ * @param {String}  moduleIdentifier The module identifier
+ * @param {...*}    data             A variable amount of data to display in the message
+ *
+ * @returns {void} This function doesn't return anything
+ */
+function debug (isDebugEnabled, moduleIdentifier, ...data) {
   if (!isDebugEnabled) {
     return;
   }
 
-  console.debug(`[MMM-RATP][DEBUG][${moduleIdentifier}]`, ...text);
+  console.debug(`[MMM-RATP][DEBUG][${moduleIdentifier}]`, ...data);
 }
 
+/**
+ * notificationTypeToLower - Retrieve a notification type and transform it to lower case
+ *
+ * @param {String} notification The notification
+ *
+ * @returns {String} The notification type, in lower case
+ */
 function notificationTypeToLower (notification) {
   return notification.split('_')[1].toLowerCase();
 }
 
+/**
+ * notificationTypeToSentence - Retrieve a notification type and transform it to sentence case
+ *
+ * @param {String} notification The notification
+ *
+ * @returns {String} The notification type, in sentence case
+ */
 function notificationTypeToSentence (notification) {
   const type = notification.split('_')[1];
 
