@@ -65,7 +65,7 @@ module.exports = NodeHelper.create({
     const scope = this[moduleIdentifier];
     const requests = [];
 
-    debug(scope.config.debug, moduleIdentifier, 'Fetching timetables');
+    debug(scope.config.debug, moduleIdentifier, 'Fetching timetables with options', options);
 
     scope.config.timetables.config.forEach((entry) => {
       const station = RATPHelper.apiRequest(`/stations/${entry.type}s/${entry.line}`)
@@ -146,7 +146,7 @@ module.exports = NodeHelper.create({
     const scope = this[moduleIdentifier];
     const requests = [];
 
-    debug(scope.config.debug, moduleIdentifier, 'Fetching traffic information');
+    debug(scope.config.debug, moduleIdentifier, 'Fetching traffic information with options', options);
 
     scope.config.traffic.config.forEach((entry) => {
       requests.push(

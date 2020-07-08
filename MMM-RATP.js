@@ -179,7 +179,7 @@ Module.register('MMM-RATP', {
       return;
     }
 
-    debug(this.config.debug, this.identifier, `Received socket notification: ${notification}`);
+    debug(this.config.debug, this.identifier, `Received socket message:\n  - identifier: ${notification}\n  - payload: ${payload}`);
 
     switch (notification) {
       case 'HELPER_INITIALIZED':

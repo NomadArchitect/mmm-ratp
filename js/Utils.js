@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-function debug(isDebugEnabled, moduleIdentifier, ...text) {
+function debug (isDebugEnabled, moduleIdentifier, ...text) {
   if (!isDebugEnabled) {
     return;
   }
