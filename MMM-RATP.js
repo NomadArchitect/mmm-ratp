@@ -185,9 +185,6 @@ Module.register('MMM-RATP', {
       case 'HELPER_INITIALIZED':
         this.sendSocketNotification('FETCH_ALL', this.identifier);
         return;
-      case 'DATA_ALL':
-        this.apiData = payload;
-        break;
       case 'DATA_TIMETABLES':
         this.apiData.timetables = payload;
         break;

@@ -195,20 +195,15 @@ module.exports = NodeHelper.create({
    *
    * @param {String} moduleIdentifier The module that requested the fetch
    *
-   * @returns {Promise} A promise resolving with nothing on success
+   * @returns {Promise<Array[]>} A promise resolving with the fetched data on success
    */
   fetchAll (moduleIdentifier) {
     debug(this[moduleIdentifier].config.debug, moduleIdentifier, 'Fetching everything');
 
     return Promise.all([
-      this.fetchTimetables(moduleIdentifier, { notifyOnFinish: false }),
-      this.fetchTraffic(moduleIdentifier, { notifyOnFinish: false })
-    ]).then(([timetables, traffic]) => {
-      this.sendSocketNotification('DATA_ALL', {
-        target: moduleIdentifier,
-        payload: { timetables, traffic }
-      });
-    });
+      this.fetchTimetables(moduleIdentifier),
+      this.fetchTraffic(moduleIdentifier)
+    ]);
   },
 
   /**
