@@ -38,6 +38,7 @@
 }
 
 .MMM-RATP__section__title {
+  position: relative;
   margin: 0 0 5px;
   padding: 0;
   border-bottom: none;

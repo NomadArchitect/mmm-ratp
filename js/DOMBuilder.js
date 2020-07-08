@@ -23,12 +23,14 @@ class DOMBuilder {
   /**
    * @static createTimetables - Create a timetables block element
    *
-   * @param {Object[]} traffic The current timetables
-   * @param {Object}   config  Configuration options for the timetables block
+   * @param {Object}    _         An object containing the timetables information
+   * @param {Object[]}  _.entries   The current timetables
+   * @param {Object}    _.status    Additional information about the timetables
+   * @param {Object}   config     The module configuration
    *
    * @returns {HTMLElement} The newly created timetables block
    */
-  static createTimetables ({ status, entries }, config) {
+  static createTimetables ({ entries, status }, config) {
     const section = DOMBuilder.createSection('timetables', status, config);
 
     entries.forEach((station) => {
@@ -50,12 +52,14 @@ class DOMBuilder {
   /**
    * @static createTraffic - Create a traffic block element
    *
-   * @param {Object[]} traffic The current traffic
-   * @param {Object}   config  Configuration options for the traffic block
+   * @param {Object}    _         An object containing the traffic information
+   * @param {Object[]}  _.entries   The current traffic
+   * @param {Object}    _.status    Additional information about the traffic
+   * @param {Object}   config     The module configuration
    *
    * @returns {HTMLElement} The newly created traffic block
    */
-  static createTraffic ({ status, entries }, config) {
+  static createTraffic ({ entries, status }, config) {
     const section = DOMBuilder.createSection('traffic', status, config);
 
     entries.forEach((info) => {
@@ -84,7 +88,9 @@ class DOMBuilder {
   /**
    * @static createSection - Create a section element
    *
-   * @param {String} [title=] The title of the section
+   * @param {String} type   The type of content that will be in the section
+   * @param {Object} status Additional information about the content
+   * @param {Object} config The module configuration
    *
    * @returns {HTMLElement} The newly created section
    */
@@ -92,11 +98,14 @@ class DOMBuilder {
     const element = document.createElement('div');
 
     element.className = `MMM-RATP__section MMM-RATP__${type}`;
-    element.innerHTML = `
-      <h3 class="MMM-RATP__section__title">
-        ${config[type].title}
-        ${(status.isUpdating && config.showUpdateAnimation) ? ' <small>Mise à jour</small>' : ''}
-      </h3>`;
+    element.innerHTML = `<h3 class="MMM-RATP__section__title">${config[type].title}</h3>`;
+
+    if (status.isUpdating && config.showUpdateAnimation) {
+      const spinner = document.createElement('span');
+
+      spinner.className = 'MMM-RATP__spinner';
+      element.querySelector('.MMM-RATP__section__title').appendChild(spinner);
+    }
 
     return element;
   }

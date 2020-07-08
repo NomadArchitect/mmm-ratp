@@ -131,3 +131,23 @@
   animation-timing-function: ease-out;
   animation-direction: alternate;
 }
+
+/* ==========================================================================
+   Component: Spinner
+   ========================================================================== */
+
+@keyframes spin { 100% { transform: rotate(359deg); } }
+
+.MMM-RATP__spinner {
+  position: absolute;
+  top: 2px;
+  box-sizing: border-box;
+  display: inline-block;
+  width: .9em;
+  height: .9em;
+  margin-left: 5px;
+  border: 3px solid;
+  border-color: #fff #989898 #989898 #989898;
+  border-radius: 50%;
+  animation: 1s infinite spin;
+}
