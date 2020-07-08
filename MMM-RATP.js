@@ -146,22 +146,17 @@ Module.register('MMM-RATP', {
   /**
    * getDom - See https://docs.magicmirror.builders/development/core-module-file.html#getdom
    *
-   * @returns {HTMLElement} The wrapper for the module's content
+   * @returns {DocumentFragment} The fragment that will be added to .module-content
    */
   getDom () {
     debug(this.config.debug, this.identifier, `Rebuilding the DOM`);
 
-    const wrapper = document.createElement('div');
+    const fragment = document.createDocumentFragment();
 
-    if (this.apiData.timetables.length) {
-      wrapper.append(DOMBuilder.createTimetables(this.apiData.timetables, this.config.timetables));
-    }
+    fragment.append(DOMBuilder.createTimetables(this.apiData.timetables, this.config.timetables));
+    fragment.append(DOMBuilder.createTraffic(this.apiData.traffic, this.config.traffic));
 
-    if (this.apiData.traffic.length) {
-      wrapper.append(DOMBuilder.createTraffic(this.apiData.traffic, this.config.traffic));
-    }
-
-    return wrapper;
+    return fragment;
   },
 
   /**
