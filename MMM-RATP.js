@@ -173,6 +173,8 @@ Module.register('MMM-RATP', {
    * @returns {void} This function doesn't return anything
    */
   socketNotificationReceived (notification, { target, payload }) {
+    // NOTE: Socket messages are broadcasted to every instantiated modules, so
+    //       we need to check whether we are the recipient of a message or not
     if (this.identifier !== target) {
       return;
     }
