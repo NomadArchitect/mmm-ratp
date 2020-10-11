@@ -116,8 +116,8 @@ Module.register('MMM-RATP', {
    */
   getScripts () {
     return [
-      this.file('js/Utils.js'),
-      this.file('js/DOMBuilder.js')
+      this.file('js/utils.js'),
+      this.file('js/dom_builder.js')
     ];
   },
 

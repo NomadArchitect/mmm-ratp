@@ -29,10 +29,10 @@ const defaultFetchOptions = {
 };
 
 const NodeHelper = require('node_helper');
-const RATPHelper = require('./js/RATPHelper');
+const RATPHelper = require('./js/ratp_helper');
 const {
   debug
-} = require('./js/Utils');
+} = require('./js/utils');
 
 module.exports = NodeHelper.create({
   /**
