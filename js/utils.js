@@ -57,6 +57,24 @@ function notificationTypeToSentence (notification) {
   return `${type.slice(0, 1)}${type.slice(1).toLowerCase()}`;
 }
 
+/**
+ * isConfigurationEmpty - Check if the module config contains a valid timetables/traffic config
+ *
+ * @param {String} type The type to check (possible values: timetables, traffic)
+ *
+ * @returns {Boolean} true if the configuration is empty or invalid, false otherwise
+ */
+function isConfigurationEmpty(type, config) {
+  if (!config[type] ||
+      !Array.isArray(config[type].config) ||
+      !config[type].config.length
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
 if (typeof exports !== 'undefined') {
   exports.debug = debug;
 }

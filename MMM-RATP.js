@@ -76,13 +76,13 @@ Module.register('MMM-RATP', {
   initializeModule () {
     debug(this.config.debug, this.identifier, `Initializing module`);
 
-    if (this.config.timetables.config.length) {
+    if (!isConfigurationEmpty('timetables', this.config)) {
       setInterval(() => {
         this.sendSocketNotification('FETCH_TIMETABLES', this.identifier);
       }, this.config.timetables.updateInterval);
     }
 
-    if (this.config.traffic.config.length) {
+    if (!isConfigurationEmpty('traffic', this.config)) {
       setInterval(() => {
         this.sendSocketNotification('FETCH_TRAFFIC', this.identifier);
       }, this.config.traffic.updateInterval);
@@ -156,8 +156,13 @@ Module.register('MMM-RATP', {
 
     const fragment = document.createDocumentFragment();
 
-    fragment.append(DOMBuilder.createTimetables(this.apiData.timetables, this.config));
-    fragment.append(DOMBuilder.createTraffic(this.apiData.traffic, this.config));
+    if (!isConfigurationEmpty('timetables', this.config)) {
+      fragment.append(DOMBuilder.createTimetables(this.apiData.timetables, this.config));
+    }
+
+    if (!isConfigurationEmpty('traffic', this.config)) {
+      fragment.append(DOMBuilder.createTraffic(this.apiData.traffic, this.config));
+    }
 
     return fragment;
   },
