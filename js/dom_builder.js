@@ -23,10 +23,10 @@ class DOMBuilder {
   /**
    * @static createTimetables - Create a timetables block element
    *
-   * @param {Object}    _         An object containing the timetables information
-   * @param {Object[]}  _.entries   The current timetables
-   * @param {Object}    _.status    Additional information about the timetables
-   * @param {Object}   config     The module configuration
+   * @param {Object}   _         An object containing the timetables information
+   * @param {Object[]} _.entries   The current timetables
+   * @param {Object}   _.status    Additional information about the timetables
+   * @param {Object}   config    The module configuration
    *
    * @returns {HTMLElement} The newly created timetables block
    */
@@ -52,10 +52,10 @@ class DOMBuilder {
   /**
    * @static createTraffic - Create a traffic block element
    *
-   * @param {Object}    _         An object containing the traffic information
-   * @param {Object[]}  _.entries   The current traffic
-   * @param {Object}    _.status    Additional information about the traffic
-   * @param {Object}   config     The module configuration
+   * @param {Object}   _         An object containing the traffic information
+   * @param {Object[]} _.entries   The current traffic
+   * @param {Object}   _.status    Additional information about the traffic
+   * @param {Object}   config    The module configuration
    *
    * @returns {HTMLElement} The newly created traffic block
    */

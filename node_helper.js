@@ -20,7 +20,8 @@
  * @typedef FetchOptions
  * @type {Object}
  *
- * @property {Boolean} [notify=true] Whether to send a notification on the socket after fetching
+ * @property {Boolean} [notifyOnStart=true]  Whether to send a notification on the socket before fetching
+ * @property {Boolean} [notifyOnFinish=true] Whether to send a notification on the socket after fetching
  */
 const defaultFetchOptions = {
   notifyOnStart: true,
@@ -28,10 +29,10 @@ const defaultFetchOptions = {
 };
 
 const NodeHelper = require('node_helper');
-const RATPHelper = require('./js/RATPHelper');
+const RATPHelper = require('./js/ratp_helper');
 const {
   debug
-} = require('./js/Utils');
+} = require('./js/utils');
 
 module.exports = NodeHelper.create({
   /**
@@ -54,6 +55,13 @@ module.exports = NodeHelper.create({
     this.sendSocketNotification('HELPER_INITIALIZED', { target: moduleIdentifier });
   },
 
+  /**
+   * mergeFetchOptions - Adds missing properties to the given options object
+   *
+   * @param {FetchOptions} options The fetch options
+   *
+   * @returns {void} This function doesn't return anything
+   */
   mergeFetchOptions (options) {
     Object.keys(defaultFetchOptions).forEach((key) => {
       if (!(key in options)) {

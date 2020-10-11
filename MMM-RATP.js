@@ -76,13 +76,13 @@ Module.register('MMM-RATP', {
   initializeModule () {
     debug(this.config.debug, this.identifier, `Initializing module`);
 
-    if (this.config.timetables.config.length) {
+    if (!isConfigurationEmpty('timetables', this.config)) {
       setInterval(() => {
         this.sendSocketNotification('FETCH_TIMETABLES', this.identifier);
       }, this.config.timetables.updateInterval);
     }
 
-    if (this.config.traffic.config.length) {
+    if (!isConfigurationEmpty('traffic', this.config)) {
       setInterval(() => {
         this.sendSocketNotification('FETCH_TRAFFIC', this.identifier);
       }, this.config.traffic.updateInterval);
@@ -116,8 +116,8 @@ Module.register('MMM-RATP', {
    */
   getScripts () {
     return [
-      this.file('js/Utils.js'),
-      this.file('js/DOMBuilder.js')
+      this.file('js/utils.js'),
+      this.file('js/dom_builder.js')
     ];
   },
 
@@ -156,8 +156,13 @@ Module.register('MMM-RATP', {
 
     const fragment = document.createDocumentFragment();
 
-    fragment.append(DOMBuilder.createTimetables(this.apiData.timetables, this.config));
-    fragment.append(DOMBuilder.createTraffic(this.apiData.traffic, this.config));
+    if (!isConfigurationEmpty('timetables', this.config)) {
+      fragment.append(DOMBuilder.createTimetables(this.apiData.timetables, this.config));
+    }
+
+    if (!isConfigurationEmpty('traffic', this.config)) {
+      fragment.append(DOMBuilder.createTraffic(this.apiData.traffic, this.config));
+    }
 
     return fragment;
   },
@@ -173,6 +178,8 @@ Module.register('MMM-RATP', {
    * @returns {void} This function doesn't return anything
    */
   socketNotificationReceived (notification, { target, payload }) {
+    // NOTE: Socket messages are broadcasted to every instantiated modules, so
+    //       we need to check whether we are the recipient of a message or not
     if (this.identifier !== target) {
       return;
     }
