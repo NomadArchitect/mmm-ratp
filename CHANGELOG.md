@@ -1,3 +1,10 @@
+# 1.0.1
+
+- feature: add support for nvm and webstorm
+- bugfix: stop displaying sections that are not configured (#1)
+- refactor: ease theme development by moving line color declarations
+- style: use snake case on js filenames
+- docs: add missing jsdoc and improve existing docs
 
 # 1.0.0 - First release!
 
