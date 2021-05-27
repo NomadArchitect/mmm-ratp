@@ -214,7 +214,7 @@ class DOMBuilder {
     element.className = 'MMM-RATP__timer';
     element.innerHTML = time || '?';
 
-    if (time === '0') element.classList.add('MMM-RATP__timer--incoming');
+    if (time === 0) element.classList.add('MMM-RATP__timer--incoming');
     if (isEstimation) element.innerHTML += '*';
 
     return element;
