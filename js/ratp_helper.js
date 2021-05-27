@@ -46,7 +46,7 @@ exports.parseWaitingTime = function (text) {
   if (text === 'Schedules unavailable') return null;
 
   // NOTE: Yep, sometimes there's an accent on the "a", and sometimes not...
-  if (/^Train (a|à) (quai|l'approche)$/i.test(text)) return 0;
+  if (/^(Train )?(a|à) (quai|l'arret|l'approche)$/i.test(text)) return 0;
 
   // NOTE: This format is the most common one, where the waiting time is just
   //       formatted as minutes until pass.
