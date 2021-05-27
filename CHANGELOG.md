@@ -1,3 +1,7 @@
+# 1.1.1
+
+- **bugfix**: display incoming train timer correctly
+
 # 1.1.0
 
 - **feature**: add support for buses
