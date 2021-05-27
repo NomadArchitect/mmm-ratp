@@ -43,15 +43,25 @@ exports.apiRequest = function (path) {
  * @returns {?String} The parsed waiting time, or null if the timetable is unavailable
  */
 exports.parseWaitingTime = function (text) {
-  switch (text) {
-    case 'Train a l\'approche':
-    case 'Train a quai':
-      return '0';
-    case 'Schedules unavailable':
-      return null;
-    default:
-      return text.replace(/ mn/gi, '');
+  if (text === 'Schedules unavailable') return null;
+
+  // NOTE: Yep, sometimes there's an accent on the "a", and sometimes not...
+  if (/^Train (a|à) (quai|l'approche)$/i.test(text)) return 0;
+
+  // NOTE: This format is the most common one, where the waiting time is just
+  //       formatted as minutes until pass.
+  if (/^[0-9]+ mn$/i.test(text)) return Number(text.replace(/ mn/gi, ''))
+
+  // NOTE: This format can be found on RERs, where the waiting time is formatted
+  //       as HH:mm, which is the time at which the train will arrive.
+  if (text.indexOf(':') !== -1) {
+    const now = new Date()
+    const passingTime = new Date(`${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${text.split(' ')[0]}`)
+
+    return Math.round((passingTime - now) / 60000)
   }
+
+  return null
 }
 
 /**
@@ -82,7 +92,7 @@ exports.parseTrafficStatus = function (text) {
  * @returns {Boolean} true if the given time is valid, false otherwise
  */
 exports.isWaitingTimeValid = function (time) {
-  return time === null || Number(time) >= 0;
+  return time === null || time >= 0;
 }
 
 /**
