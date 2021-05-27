@@ -1,3 +1,8 @@
+# 1.1.0
+
+- **feature**: add support for buses
+- **bugfix**: improve the detection of vehicles arriving at the station
+
 # 1.0.2
 
 - **bugfix**: handle waiting times formatted as HH:mm in some cases
