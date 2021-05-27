@@ -91,11 +91,13 @@ module.exports = NodeHelper.create({
     }
 
     scope.config.timetables.config.forEach((entry) => {
-      const station = RATPHelper.apiRequest(`/stations/${entry.type}s/${entry.line}`)
+      const lineType = RATPHelper.formatLineType(entry.type)
+
+      const station = RATPHelper.apiRequest(`/stations/${lineType}/${entry.line}`)
         .then((stations) => stations.result.stations)
         .then((stations) => stations.find((s) => s.slug === entry.station));
 
-      const timetable = RATPHelper.apiRequest(`/schedules/${entry.type}s/${entry.line}/${entry.station}/${entry.direction}`)
+      const timetable = RATPHelper.apiRequest(`/schedules/${lineType}/${entry.line}/${entry.station}/${entry.direction}`)
         .then((timetable) => timetable.result.schedules)
         .then((timetable) => timetable.map((nextPass) => ({
           waitingTime: RATPHelper.parseWaitingTime(nextPass.message),
@@ -179,7 +181,7 @@ module.exports = NodeHelper.create({
 
     scope.config.traffic.config.forEach((entry) => {
       requests.push(
-        RATPHelper.apiRequest(`/traffic/${entry.type}s/${entry.line}`)
+        RATPHelper.apiRequest(`/traffic/${RATPHelper.formatLineType(entry.type)}/${entry.line}`)
           .then((traffic) => traffic.result)
           .then((traffic) => ({
             lineType: entry.type,

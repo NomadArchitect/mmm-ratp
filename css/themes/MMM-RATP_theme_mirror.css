@@ -28,6 +28,7 @@
 .MMM-RATP__card__text__title    { color: #CCC; }
 .MMM-RATP__card__text__subtitle { color: #777; }
 
+.MMM-RATP__line--bus,
 .MMM-RATP__line--metro {
   background-color: #CCC;
   color: #000;
@@ -42,8 +43,4 @@
 .MMM-RATP__timer {
   color: #EEE;
   background-color: #222;
-}
-
-.MMM-RATP__timer--incoming {
-  color: transparent;
 }

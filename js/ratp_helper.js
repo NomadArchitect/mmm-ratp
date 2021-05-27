@@ -33,7 +33,7 @@ exports.apiRequest = function (path) {
     method: 'GET',
     url
   }).then((resp) => resp.body);
-}
+};
 
 /**
  * parseWaitingTime - Transform the raw waiting time from the API to a usable one
@@ -46,23 +46,23 @@ exports.parseWaitingTime = function (text) {
   if (text === 'Schedules unavailable') return null;
 
   // NOTE: Yep, sometimes there's an accent on the "a", and sometimes not...
-  if (/^Train (a|à) (quai|l'approche)$/i.test(text)) return 0;
+  if (/^(Train )?(a|à) (quai|l'arret|l'approche)$/i.test(text)) return 0;
 
   // NOTE: This format is the most common one, where the waiting time is just
   //       formatted as minutes until pass.
-  if (/^[0-9]+ mn$/i.test(text)) return Number(text.replace(/ mn/gi, ''))
+  if (/^[0-9]+ mn$/i.test(text)) return Number(text.replace(/ mn/gi, ''));
 
   // NOTE: This format can be found on RERs, where the waiting time is formatted
   //       as HH:mm, which is the time at which the train will arrive.
   if (text.indexOf(':') !== -1) {
-    const now = new Date()
-    const passingTime = new Date(`${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${text.split(' ')[0]}`)
+    const now = new Date();
+    const passingTime = new Date(`${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${text.split(' ')[0]}`);
 
-    return Math.round((passingTime - now) / 60000)
+    return Math.round((passingTime - now) / 60000);
   }
 
-  return null
-}
+  return null;
+};
 
 /**
  * parseTrafficStatus - Transform the raw traffic status from the API to a usable one
@@ -82,7 +82,7 @@ exports.parseTrafficStatus = function (text) {
     default:
       return text;
   }
-}
+};
 
 /**
  * isWaitingTimeValid - Check if a given waiting time is valid or not
@@ -93,7 +93,7 @@ exports.parseTrafficStatus = function (text) {
  */
 exports.isWaitingTimeValid = function (time) {
   return time === null || time >= 0;
-}
+};
 
 /**
  * isTimetableAvailable - Check if a given timetable is available or not
@@ -104,4 +104,24 @@ exports.isWaitingTimeValid = function (time) {
  */
 exports.isTimetableAvailable = function (timetable) {
   return timetable.length && timetable[0].waiting !== null;
-}
+};
+
+/**
+ * formatLineType - Transform the given line type to an api-compatible type
+ *
+ * @param {String} type The line type (ex: bus, rer, ...)
+ *
+ * @returns {String} An api-compatible line type
+ */
+exports.formatLineType = function (type) {
+  switch (type) {
+    case 'bus':
+      return 'buses';
+    case 'metro':
+      return 'metros';
+    case 'rer':
+      return 'rers';
+    case 'tramway':
+      return 'tramways';
+  }
+};
