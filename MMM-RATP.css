@@ -17,37 +17,37 @@
  */
 
 :root {
-  --mmm-ratp-line-metro-1-color:  #FFCD00;
-  --mmm-ratp-line-metro-2-color:  #003CA6;
-  --mmm-ratp-line-metro-3-color:  #837902;
-  --mmm-ratp-line-metro-3b-color: #6EC4E8;
-  --mmm-ratp-line-metro-4-color:  #CF009E;
-  --mmm-ratp-line-metro-5-color:  #FF7E2E;
-  --mmm-ratp-line-metro-6-color:  #6ECA97;
-  --mmm-ratp-line-metro-7-color:  #FA9ABA;
-  --mmm-ratp-line-metro-7b-color: #6ECA97;
-  --mmm-ratp-line-metro-8-color:  #E19BDF;
-  --mmm-ratp-line-metro-9-color:  #B6BD00;
-  --mmm-ratp-line-metro-10-color: #C9910D;
-  --mmm-ratp-line-metro-11-color: #704B1C;
-  --mmm-ratp-line-metro-12-color: #007852;
-  --mmm-ratp-line-metro-13-color: #6EC4E8;
-  --mmm-ratp-line-metro-14-color: #62259D;
+  --mmm-ratp-line-color-metro-1:  #FFCD00;
+  --mmm-ratp-line-color-metro-2:  #003CA6;
+  --mmm-ratp-line-color-metro-3:  #837902;
+  --mmm-ratp-line-color-metro-3b: #6EC4E8;
+  --mmm-ratp-line-color-metro-4:  #CF009E;
+  --mmm-ratp-line-color-metro-5:  #FF7E2E;
+  --mmm-ratp-line-color-metro-6:  #6ECA97;
+  --mmm-ratp-line-color-metro-7:  #FA9ABA;
+  --mmm-ratp-line-color-metro-7b: #6ECA97;
+  --mmm-ratp-line-color-metro-8:  #E19BDF;
+  --mmm-ratp-line-color-metro-9:  #B6BD00;
+  --mmm-ratp-line-color-metro-10: #C9910D;
+  --mmm-ratp-line-color-metro-11: #704B1C;
+  --mmm-ratp-line-color-metro-12: #007852;
+  --mmm-ratp-line-color-metro-13: #6EC4E8;
+  --mmm-ratp-line-color-metro-14: #62259D;
 
-  --mmm-ratp-line-rer-a-color: #E2231A;
-  --mmm-ratp-line-rer-b-color: #7BA3DC;
-  --mmm-ratp-line-rer-c-color: #C9910D;
-  --mmm-ratp-line-rer-d-color: #00AE41;
-  --mmm-ratp-line-rer-e-color: #E37ED1;
+  --mmm-ratp-line-color-rer-a: #E2231A;
+  --mmm-ratp-line-color-rer-b: #7BA3DC;
+  --mmm-ratp-line-color-rer-c: #C9910D;
+  --mmm-ratp-line-color-rer-d: #00AE41;
+  --mmm-ratp-line-color-rer-e: #E37ED1;
 
-  --mmm-ratp-line-tramway-1-color:  #003CA6;
-  --mmm-ratp-line-tramway-2-color:  #CF009E;
-  --mmm-ratp-line-tramway-3a-color: #FF7E2E;
-  --mmm-ratp-line-tramway-3b-color: #00AE41;
-  --mmm-ratp-line-tramway-5-color:  #62259D;
-  --mmm-ratp-line-tramway-6-color:  #E2231A;
-  --mmm-ratp-line-tramway-7-color:  #704B1C;
-  --mmm-ratp-line-tramway-8-color:  #837902;
+  --mmm-ratp-line-color-tramway-1:  #003CA6;
+  --mmm-ratp-line-color-tramway-2:  #CF009E;
+  --mmm-ratp-line-color-tramway-3a: #FF7E2E;
+  --mmm-ratp-line-color-tramway-3b: #00AE41;
+  --mmm-ratp-line-color-tramway-5:  #62259D;
+  --mmm-ratp-line-color-tramway-6:  #E2231A;
+  --mmm-ratp-line-color-tramway-7:  #704B1C;
+  --mmm-ratp-line-color-tramway-8:  #837902;
 }
 
 /* ==========================================================================
