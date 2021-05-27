@@ -168,6 +168,10 @@ class DOMBuilder {
     element.innerHTML = name;
     element.setAttribute('data-line', name.toLowerCase());
 
+    if (name.length > 2) {
+      element.classList.add('MMM-RATP__line--small');
+    }
+
     if (status) {
       element.classList.add('MMM-RATP__line--badge');
       element.classList.add(`MMM-RATP__line--badge-${status}`);

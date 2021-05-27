@@ -67,7 +67,7 @@
 }
 
 /* ==========================================================================
-   Component: Line (as in public transport)
+   Component: Line (as in "public transport line")
    ========================================================================== */
 
 .MMM-RATP__line {
@@ -85,6 +85,11 @@
   font-weight: bold;
 }
 
+.MMM-RATP__line--small {
+  font-size: .7em;
+}
+
+.MMM-RATP__line--bus,
 .MMM-RATP__line--metro {
   border-color: transparent;
 }
@@ -114,6 +119,7 @@
 
 .MMM-RATP__timer--incoming {
   position: relative;
+  color: transparent;
 }
 
 .MMM-RATP__timer--incoming::after {

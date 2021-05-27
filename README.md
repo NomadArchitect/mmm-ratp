@@ -8,8 +8,8 @@ It uses the gorgeous [RATP API](https://api-ratp.pierre-grimaud.fr/v4/) from Pie
 
 **Features**
 
-* [x] Get as much as the next 4 **passing times for whatever station and line you want** (only Metros, RERs, and Tramways are supported as of now)
-* [x] Get **traffic informati**on about your line. Is Metro 13 having slowdowns again? You will know!
+* [x] Get as much as the next 4 **passing times for whatever station and line you want** (compatible with metros, RERs, tramways, and buses)
+* [x] Get **traffic information** about your line. Is Metro 13 having slowdowns again? You will know!
 * [x] A **sleek design** right?
 * [x] Two bundled themes: a black/white one for mirrors, and a colored one for home dashboards.
 * [x] Support for **multiple instances**. You want to have the next passes on the left and traffic information on the right? You can!
@@ -71,8 +71,8 @@ The `timetables` option allows you to define the configuration of the timetables
 | ------------------ | ---------------- | ----------- |
 | `title`            | `String`         | The title to display above the timetables section.<br><br>**Default value:** `'Prochains passages'` |
 | `updateInterval`   | `Number`         | The time to wait between each timetables refresh, in milliseconds.<br><br>**Default value:** `1 * 60 * 1000` (1 minute) |
-| `nextPassesAmount` | `Number`          | The maximum amount of upcoming passes to display (you might actually see less than the amount you ask, it depends on the data that the API provides for your line).<br><br>**Possible values:** `1`, `2`, `3`, or `4`<br>**Default value:** `2` |
-| `config`           | `Array<Object>` | The definition of the timetables you want. Look at the example usage above to understand how it works. A reference will be available below.<br><br>**Required properties for each object:** `type`, `line`, `station`, `direction` |
+| `nextPassesAmount` | `Number`         | The maximum amount of upcoming passes to display (you might actually see less than the amount you ask, it depends on the data that the API provides for your line).<br><br>**Possible values:** `1`, `2`, `3`, or `4`<br>**Default value:** `2` |
+| `config`           | `Array<Object>`  | The definition of the timetables you want. Look at the example usage above to understand how it works. A reference will be available below.<br><br>**Required properties for each object:** `type`, `line`, `station`, `direction` |
 
 #### Traffic information configuration
 
@@ -89,7 +89,7 @@ The `traffic` option allows you to define the configuration of the traffic infor
 
 | Property    | Type     | Description |
 | ----------- | -------- | ----------- |
-| `type`      | `String` | The line type.<br><br>**Possible values:** `'metro'`, `'rer'`, `'tramway'`<br><br>Technically the API also supports buses and noctiliens, but this module is not yet ready for it. Soon. |
+| `type`      | `String` | The line type.<br><br>**Possible values:** `'bus'`, `'metro'`, `'rer'`, `'tramway'`<br><br>Technically the API also supports noctiliens, but this module is not yet ready for it. Soon. |
 | `line`      | `String` | The line identifier.<br><br>**Examples:** `'2'` (metro), `'3b'`(tramway), `'B'` (rer) |
 | `station`   | `String` | The station slug, you have to get it directly from [Pierre's API](https://api-ratp.pierre-grimaud.fr/v4). Here's an example URL that will give you the list of stations for Metro 9 : [https://api-ratp.pierre-grimaud.fr/v4/stations/metros/9](https://api-ratp.pierre-grimaud.fr/v4/stations/metros/9)<br><br>**Examples:** `'place+de+clichy'`, `'porte+de+clichy+++tribunal+de+paris'` |
 | `direction` | `String` | For which direction you want to get the next passes.<br><br>**Possible values:** `'A'`, `'R'` (it stands for Aller / Retour) |
