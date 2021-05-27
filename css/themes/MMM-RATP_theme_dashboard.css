@@ -46,6 +46,8 @@
 .MMM-RATP__line--badge-incident::before { background-color: #dd0029; }
 .MMM-RATP__line--badge-protest::before  { background-color: #cc00c9; }
 
+.MMM-RATP__line--bus { background-color: var(--mmm-ratp-color-bleu-ratp); color: #fff; }
+
 .MMM-RATP__line--metro[data-line="1"]  { background-color: var(--mmm-ratp-line-color-metro-1);  color: #000; }
 .MMM-RATP__line--metro[data-line="2"]  { background-color: var(--mmm-ratp-line-color-metro-2);  color: #fff; }
 .MMM-RATP__line--metro[data-line="3"]  { background-color: var(--mmm-ratp-line-color-metro-3);  color: #fff; }

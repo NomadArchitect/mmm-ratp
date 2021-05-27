@@ -85,6 +85,11 @@
   font-weight: bold;
 }
 
+.MMM-RATP__line--small {
+  font-size: .7em;
+}
+
+.MMM-RATP__line--bus,
 .MMM-RATP__line--metro {
   border-color: transparent;
 }

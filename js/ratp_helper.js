@@ -105,3 +105,23 @@ exports.isWaitingTimeValid = function (time) {
 exports.isTimetableAvailable = function (timetable) {
   return timetable.length && timetable[0].waiting !== null;
 };
+
+/**
+ * formatLineType - Transform the given line type to an api-compatible type
+ *
+ * @param {String} type The line type (ex: bus, rer, ...)
+ *
+ * @returns {String} An api-compatible line type
+ */
+exports.formatLineType = function (type) {
+  switch (type) {
+    case 'bus':
+      return 'buses';
+    case 'metro':
+      return 'metros';
+    case 'rer':
+      return 'rers';
+    case 'tramway':
+      return 'tramways';
+  }
+};

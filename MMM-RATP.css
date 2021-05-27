@@ -17,6 +17,9 @@
  */
 
 :root {
+  --mmm-ratp-color-vert-jade-ratp: #00C4B3;
+  --mmm-ratp-color-bleu-ratp:      #050D9E;
+
   --mmm-ratp-line-color-metro-1:  #FFCD00;
   --mmm-ratp-line-color-metro-2:  #003CA6;
   --mmm-ratp-line-color-metro-3:  #837902;
