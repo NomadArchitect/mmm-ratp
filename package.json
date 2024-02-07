@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": ["public transport"],
   "author": "closingin",
-  "license": "GPLv3",
+  "license": "GPL-3.0-only",
   "dependencies": {
     "phin": "^3.5.0"
   }
